@@ -8,6 +8,7 @@ open Giraffe.ViewEngine
 open FSharp.Control.Tasks
 open Todos
 open System
+open System.Collections.Generic
 
 type PingModel = {
     Response: string
@@ -44,6 +45,24 @@ module Handlers =
                 return! json created next ctx
             }
 
+    let updateTaskHandler =
+        fun (next : HttpFunc) (ctx : HttpContext) ->
+            task {
+                let! todo = ctx.BindJsonAsync<Todo>()
+                let store = ctx.GetService<Store>()
+                let updated = store.Update(todo)
+                return! json updated next ctx
+            }
+
+    let deleteTaskHandler (id : Guid) = 
+        fun (next : HttpFunc) (ctx : HttpContext) ->
+            task {
+                let store = ctx.GetService<Store>()
+                let existing = store.Get(id)
+                let deleted = store.Delete(KeyValuePair<TodoId, Todo>(id, existing))
+                return! json deleted next ctx
+            }
+
 let apiTodoRoutes : HttpHandler =
     subRoute "/todo/"
         (choose [
@@ -52,6 +71,8 @@ let apiTodoRoutes : HttpHandler =
                 route "" >=> Handlers.viewTasksHandler
             ]
             POST >=> route "" >=> Handlers.createTaskHandler
+            PUT >=> route "" >=> Handlers.updateTaskHandler
+            DELETE >=> routef "/%O" Handlers.deleteTaskHandler
         ])
 
 let webApp =
