@@ -9,10 +9,11 @@ open FSharp.Control.Tasks
 open Todos
 open System
 open System.Collections.Generic
+open Microsoft.Extensions.Logging
 
-type PingModel = {
-    Response: string
-}
+let errorHandler (ex: Exception) (logger: ILogger) =
+    logger.LogError(EventId(), ex, "An unhandled exception has occurred while executing the request.")
+    clearResponse >=> setStatusCode 500 >=> text ex.Message
 
 module Handlers =
     let viewTaskHandler (id : Guid) = 
@@ -82,17 +83,24 @@ let webApp =
         subRoute "/api"
             (choose [
                 apiTodoRoutes
-                GET >=> route "" >=> json { Response = "Todo List API" }
             ])
-        //setStatusCode 404 >=> text "Not Found"
+        setStatusCode 404 >=> text "Not Found"
     ]
 
+// Configuration
+
 let configureApp (app : IApplicationBuilder) =
-    app.UseGiraffe webApp
+    app.UseGiraffeErrorHandler(errorHandler)
+       .UseGiraffe webApp
 
 let configureServices (services : IServiceCollection) =
     services.AddGiraffe()
             .AddSingleton<Store>(Store()) |> ignore
+
+let configureLogging (loggingBuilder : ILoggingBuilder) =
+    loggingBuilder.AddFilter(fun lvl -> lvl.Equals LogLevel.Error)
+                  .AddConsole()
+                  .AddDebug() |> ignore
 
 [<EntryPoint>]
 let main _ =
@@ -101,6 +109,7 @@ let main _ =
             webHost
                 .Configure(configureApp)
                 .ConfigureServices(configureServices)
+                .ConfigureLogging(configureLogging)
                 |> ignore)
         .Build()
         .Run()
