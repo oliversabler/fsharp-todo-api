@@ -3,7 +3,8 @@
 Lightweight Todo API written in F# using [Giraffe](https://github.com/giraffe-fsharp/Giraffe)
 
 ## How to use
-Create new todo:
+Create a new todo:
+
 POST `http://localhost:5000/api/todo/`
 ```
 {
@@ -12,12 +13,15 @@ POST `http://localhost:5000/api/todo/`
 ```
 
 Get all todos:
+
 GET `http://localhost:5000/api/todo/`
 
 Get todo with guid:
+
 GET `http://localhost:5000/api/todo/<guid>`
 
 Update a todo:
+
 PUT `http://localhost:5000/api/todo/`
 ```
 {
@@ -28,4 +32,5 @@ PUT `http://localhost:5000/api/todo/`
 ```
 
 Delete a todo:
+
 DELETE `http://localhost:5000/api/todo/<guid>`
