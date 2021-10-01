@@ -1,9 +1,9 @@
-# Giraffe Test API
+# Todo API with Giraffe
 ## Description
 Lightweight Todo API written in F# using [Giraffe](https://github.com/giraffe-fsharp/Giraffe)
 
 ## How to use
-### Create a new todo
+### Create a new task
 POST `http://localhost:5000/api/todo/`
 ```
 {
@@ -11,13 +11,13 @@ POST `http://localhost:5000/api/todo/`
 }
 ```
 
-### Get all todos
+### Get all tasks
 GET `http://localhost:5000/api/todo/`
 
-### Get todo with guid
+### Get task with guid
 GET `http://localhost:5000/api/todo/<guid>`
 
-### Update a todo
+### Update a task
 PUT `http://localhost:5000/api/todo/`
 ```
 {
@@ -27,5 +27,5 @@ PUT `http://localhost:5000/api/todo/`
 }
 ```
 
-### Delete a todo
+### Delete a task
 DELETE `http://localhost:5000/api/todo/<guid>`
