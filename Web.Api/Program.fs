@@ -4,12 +4,15 @@ open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Http
 open Giraffe
-open Giraffe.ViewEngine
 open FSharp.Control.Tasks
 open Todos
 open System
 open System.Collections.Generic
 open Microsoft.Extensions.Logging
+
+//////////////
+// Handlers //
+//////////////
 
 let errorHandler (ex: Exception) (logger: ILogger) =
     logger.LogError(EventId(), ex, "An unhandled exception has occurred while executing the request.")
@@ -64,16 +67,20 @@ module Handlers =
                 return! json deleted next ctx
             }
 
+/////////////
+// Web App //
+/////////////
+
 let apiTodoRoutes : HttpHandler =
     subRoute "/todo/"
         (choose [
             GET >=> choose [
-                routef "/%O" Handlers.viewTaskHandler
+                routef "%O" Handlers.viewTaskHandler
                 route "" >=> Handlers.viewTasksHandler
             ]
             POST >=> route "" >=> Handlers.createTaskHandler
             PUT >=> route "" >=> Handlers.updateTaskHandler
-            DELETE >=> routef "/%O" Handlers.deleteTaskHandler
+            DELETE >=> routef "%O" Handlers.deleteTaskHandler
         ])
 
 let webApp =
@@ -87,7 +94,9 @@ let webApp =
         setStatusCode 404 >=> text "Not Found"
     ]
 
-// Configuration
+///////////////////
+// Configuration //
+///////////////////
 
 let configureApp (app : IApplicationBuilder) =
     app.UseGiraffeErrorHandler(errorHandler)
