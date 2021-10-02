@@ -8,12 +8,8 @@ open System
 open Microsoft.Extensions.Logging
 
 /////////////
-// Web App //
+// Web Api //
 /////////////
-
-let errorHandler (ex: Exception) (logger: ILogger) =
-    logger.LogError(EventId(), ex, "An unhandled exception has occurred while executing the request.")
-    clearResponse >=> setStatusCode 500 >=> text ex.Message
 
 let apiTodoRoutes : HttpHandler =
     subRoute "/todo/"
@@ -39,6 +35,14 @@ let webApp =
     ]
 
 ///////////////////
+// Error Handler //
+///////////////////
+
+let errorHandler (ex: Exception) (logger: ILogger) =
+    logger.LogError(EventId(), ex, "An unhandled exception has occurred while executing the request.")
+    clearResponse >=> setStatusCode 500 >=> text ex.Message
+
+///////////////////
 // Configuration //
 ///////////////////
 
@@ -51,7 +55,7 @@ let configureServices (services : IServiceCollection) =
             .AddSingleton<Store>(Store()) |> ignore
 
 let configureLogging (loggingBuilder : ILoggingBuilder) =
-    loggingBuilder.AddFilter(fun lvl -> lvl.Equals LogLevel.Error)
+    loggingBuilder.AddFilter(fun lvl -> lvl >= LogLevel.Information)
                   .AddConsole()
                   .AddDebug() |> ignore
 
