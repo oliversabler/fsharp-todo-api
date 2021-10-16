@@ -12,9 +12,11 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
   database:
-    ports:
-      - 5432:5432
     environment:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
       POSTGRES_DB: todo_database
+    ports:
+      - 5432:5432
+    volumes:
+      - ./database/create-todo-table.sql:/docker-entrypoint-initdb.d/create-todo-table.sql
