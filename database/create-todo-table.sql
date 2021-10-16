@@ -1,6 +1,6 @@
-﻿CREATE TABLE Employees_Sample (
-    Id uniqueidentifier DEFAULT NEWSEQUENTIALID,
-    Description nvarchar(max) NOT NULL,
-    Created datetime2 NOT NULL,
-    IsCompleted int NOT NULL
+﻿create table "Todo" (
+    "Id" uuid NOT NULL constraint todo_pk primary key,
+    "Description" varchar(120) NOT NULL,
+    "Created" date NOT NULL,
+    "IsCompleted" boolean NOT NULL
 );
