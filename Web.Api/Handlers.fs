@@ -3,7 +3,8 @@
 open System
 open Microsoft.AspNetCore.Http
 open Giraffe
-open Todos
+open Models
+open Repository
 open System.Collections.Generic
 open Microsoft.Extensions.Logging
 
@@ -43,8 +44,8 @@ let createTaskHandler =
 
         task {
             let! newTodo = ctx.BindJsonAsync<NewTodo>()
-            let todo = { 
-                Id = Guid.NewGuid(); 
+            let todo = {
+                Id = Guid.NewGuid();
                 Description = newTodo.Description; 
                 Created = DateTime.UtcNow; 
                 IsCompleted = false 

@@ -1,20 +1,7 @@
-﻿module Todos
+﻿module Repository
 
-open System
+open Models
 open System.Collections.Concurrent
-
-type TodoId = Guid
-
-type NewTodo = {
-    Description: string
-}
-
-type Todo = {
-    Id : TodoId
-    Description: string
-    Created: DateTime
-    IsCompleted: bool
-}
 
 type Store() = 
     let data = ConcurrentDictionary<TodoId, Todo>()

@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper.FSharp" Version="3.0.0" />
     <PackageReference Include="Giraffe" Version="5.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
   </ItemGroup>
@@ -30,6 +31,11 @@
     <Content Include="WebRoot\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Scripts\**" />
+    <EmbeddedResource Remove="Scripts\**" />
   </ItemGroup>
   
 </Project>

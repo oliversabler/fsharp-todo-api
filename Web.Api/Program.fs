@@ -3,9 +3,10 @@ open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
-open Todos
+open Repository
 open System
 open Microsoft.Extensions.Logging
+open Dapper.FSharp
 
 /////////////
 // Web Api //
@@ -58,6 +59,8 @@ let configureLogging (loggingBuilder : ILoggingBuilder) =
     loggingBuilder.AddFilter(fun lvl -> lvl >= LogLevel.Information)
                   .AddConsole()
                   .AddDebug() |> ignore
+
+OptionTypes.register()
 
 [<EntryPoint>]
 let main _ =
