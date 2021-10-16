@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{1716D048-2908-4C95-BBE7-C8D4F541D727}"
 	ProjectSection(SolutionItems) = preProject
-		.database\create-todo-table.sql = .database\create-todo-table.sql
+		database\create-todo-table.sql = database\create-todo-table.sql
 	EndProjectSection
 EndProject
 Global

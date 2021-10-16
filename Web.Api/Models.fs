@@ -2,15 +2,14 @@
 
 open System
 
-type TodoId = Guid
-
 type NewTodo = {
     Description: string
 }
 
+[<CLIMutable>]
 type Todo = {
-    Id : TodoId
-    Description: string
-    Created: DateTime
-    IsCompleted: bool
+    Id : Guid
+    Description : string
+    Created : DateTime
+    IsCompleted : bool
 }

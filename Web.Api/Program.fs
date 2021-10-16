@@ -15,13 +15,13 @@ open Dapper.FSharp
 let apiTodoRoutes : HttpHandler =
     subRoute "/todo/"
         (choose [
-            GET >=> choose [
-                routef "%O" Handlers.getTaskHandler
-                route "" >=> Handlers.getTasksHandler
-            ]
+            //GET >=> choose [
+            //    routef "%O" Handlers.getTaskHandler
+            //    route "" >=> Handlers.getTasksHandler
+            //]
             POST >=> route "" >=> Handlers.createTaskHandler
-            PUT >=> route "" >=> Handlers.updateTaskHandler
-            DELETE >=> routef "%O" Handlers.deleteTaskHandler
+            //PUT >=> route "" >=> Handlers.updateTaskHandler
+            //DELETE >=> routef "%O" Handlers.deleteTaskHandler
         ])
 
 let webApp =
