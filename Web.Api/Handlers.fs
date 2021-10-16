@@ -23,20 +23,20 @@ open Microsoft.Extensions.Logging
 //            return! json todo next ctx
 //        }
 
-//let getTasksHandler = 
-//    fun (next : HttpFunc) (ctx : HttpContext) ->
-//        let logger = ctx.GetLogger()
+let getTasksHandler = 
+    fun (next : HttpFunc) (ctx : HttpContext) ->
+        let logger = ctx.GetLogger()
 
-//        task {
-//            logger.Log(LogLevel.Information, $"Fetching all tasks")
+        task {
+            logger.Log(LogLevel.Information, $"Fetching all tasks")
             
-//            let store = ctx.GetService<Store>()
-//            let todos = store.GetAll()
+            let store = ctx.GetService<Store>()
+            let todos = store.GetAll()
 
-//            logger.Log(LogLevel.Information, todos.ToString())
+            logger.Log(LogLevel.Information, todos.ToString())
 
-//            return! json todos next ctx
-//        }
+            return! json todos next ctx
+        }
 
 let createTaskHandler =
     fun (next : HttpFunc) (ctx : HttpContext) ->
