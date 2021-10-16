@@ -3,13 +3,14 @@
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
 EXPOSE 80
+EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["Web.Api.fsproj", "."]
-RUN dotnet restore "Web.Api.fsproj"
+COPY ["Web.Api/Web.Api.fsproj", "Web.Api/"]
+RUN dotnet restore "Web.Api/Web.Api.fsproj"
 COPY . .
-WORKDIR "/src/"
+WORKDIR "/src/Web.Api"
 RUN dotnet build "Web.Api.fsproj" -c Release -o /app/build
 
 FROM build AS publish
