@@ -1,0 +1,3 @@
+﻿{
+  "connectionString": "Host=host.docker.internal;User ID=username;Password=password;Database=todo_database;Port=5432"
+}

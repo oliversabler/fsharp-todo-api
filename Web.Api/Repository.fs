@@ -6,13 +6,12 @@ open Dapper.FSharp
 open Dapper.FSharp.PostgreSQL
 open Npgsql
 
+open Microsoft.Extensions.Configuration
 open System.Data
-open System
 
 type Store() = 
-    //let data = ConcurrentDictionary<TodoId, Todo>()
-    let connectionString = "Host=host.docker.internal;User ID=username;Password=password;Database=todo_database;Port=5432"
-    let conn = new NpgsqlConnection(connectionString) :> IDbConnection
+    let config = (ConfigurationBuilder()).AddJsonFile("settings.json").Build()
+    let conn = new NpgsqlConnection(config.["connectionString"]) :> IDbConnection
 
     member _.Create newTodo = 
         //data.TryAdd(todo.Id, todo)
