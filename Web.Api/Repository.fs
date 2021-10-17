@@ -55,14 +55,37 @@ type Store() =
                     for t in todoTable do
                     selectAll
                 } |> conn.SelectAsync<Todo>
-                    |> taskToArray
+                  |> taskToArray
 
             conn.Close()
                 
             return result
         }
 
-    //member _.Update todo = data.TryUpdate(todo.Id, todo, data.[todo.Id])
+    member _.Update todo = 
+        task {
+            conn.Open()
+
+            let _ = 
+                update {
+                    for t in todoTable do
+                    setColumn t.Description todo.Description
+                    setColumn t.IsCompleted todo.IsCompleted
+                    where (t.Id = todo.Id)
+                } |> conn.UpdateAsync<Todo>
+                  |> Async.AwaitTask
+
+            let result = 
+                select {
+                    for t in todoTable do
+                    where (t.Id = todo.Id)
+                } |> conn.SelectAsync<Todo>
+                  |> taskToArray
+
+            conn.Close()
+            
+            return result
+        }
 
     //member _.Delete id = data.TryRemove id
 

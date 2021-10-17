@@ -20,7 +20,7 @@ let apiTodoRoutes : HttpHandler =
                 route "" >=> Handlers.readTasksHandler
             ]
             POST >=> route "" >=> Handlers.createTaskHandler
-            //PUT >=> route "" >=> Handlers.updateTaskHandler
+            PUT >=> route "" >=> Handlers.updateTaskHandler
             //DELETE >=> routef "%O" Handlers.deleteTaskHandler
         ])
 

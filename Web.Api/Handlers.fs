@@ -59,20 +59,20 @@ let createTaskHandler =
             return! json todo next ctx
         }
 
-//let updateTaskHandler =
-//    fun (next : HttpFunc) (ctx : HttpContext) ->
-//        let logger = ctx.GetLogger()
+let updateTaskHandler =
+    fun (next : HttpFunc) (ctx : HttpContext) ->
+        let logger = ctx.GetLogger()
 
-//        task {
-//            let! todo = ctx.BindJsonAsync<Todo>()
+        task {
+            let! todo = ctx.BindJsonAsync<Todo>()
 
-//            logger.Log(LogLevel.Information, $"Updating task with guid: {todo.Id}")
+            logger.Log(LogLevel.Information, $"Updating task with guid: {todo.Id}")
 
-//            let store = ctx.GetService<Store>()
-//            let updated = store.Update(todo)
+            let store = ctx.GetService<Store>()
+            let updated = store.Update(todo)
 
-//            return! json updated next ctx
-//        }
+            return! json updated next ctx
+        }
 
 //let deleteTaskHandler (id : Guid) = 
 //    fun (next : HttpFunc) (ctx : HttpContext) ->
