@@ -1,12 +1,13 @@
 ﻿module Handlers
 
-open System
-open Microsoft.AspNetCore.Http
-open Giraffe
 open Models
 open Repository
-open System.Collections.Generic
+
+open Giraffe
+
+open Microsoft.AspNetCore.Http
 open Microsoft.Extensions.Logging
+open System
 
 let readTaskHandler (id : Guid) = 
     fun (next : HttpFunc) (ctx : HttpContext) ->
@@ -74,16 +75,16 @@ let updateTaskHandler =
             return! json updated next ctx
         }
 
-//let deleteTaskHandler (id : Guid) = 
-//    fun (next : HttpFunc) (ctx : HttpContext) ->
-//        let logger = ctx.GetLogger()
+let deleteTaskHandler (id : Guid) = 
+    fun (next : HttpFunc) (ctx : HttpContext) ->
+        let logger = ctx.GetLogger()
 
-//        task {
-//            logger.Log(LogLevel.Information, $"Deleting task with guid: {id}")
+        task {
+            logger.Log(LogLevel.Information, $"Deleting task with guid: {id}")
 
-//            let store = ctx.GetService<Store>()
-//            let existing = store.Get(id)
-//            let deleted = store.Delete(KeyValuePair<TodoId, Todo>(id, existing))
+            let store = ctx.GetService<Store>()
+            let existing = store.Read(id)
+            let deleted = store.Delete(id)
 
-//            return! json deleted next ctx
-//        }
+            return! json deleted next ctx
+        }

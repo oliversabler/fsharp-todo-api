@@ -1,12 +1,14 @@
-﻿open Microsoft.AspNetCore.Builder
+﻿open Repository
+
+open Dapper.FSharp
+open Giraffe
+
+open Microsoft.AspNetCore.Builder
+open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
-open Microsoft.Extensions.DependencyInjection
-open Giraffe
-open Repository
-open System
 open Microsoft.Extensions.Logging
-open Dapper.FSharp
+open System
 
 /////////////
 // Web Api //
@@ -21,7 +23,7 @@ let apiTodoRoutes : HttpHandler =
             ]
             POST >=> route "" >=> Handlers.createTaskHandler
             PUT >=> route "" >=> Handlers.updateTaskHandler
-            //DELETE >=> routef "%O" Handlers.deleteTaskHandler
+            DELETE >=> routef "%O" Handlers.deleteTaskHandler
         ])
 
 let webApp =

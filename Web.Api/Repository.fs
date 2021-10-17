@@ -17,13 +17,13 @@ type Store() =
 
     let taskToArray (t:Task<seq<'a>>) = t |> Async.AwaitTask |> Async.RunSynchronously |> Seq.toArray
 
-    member _.Create newTodo = 
+    member _.Create todo = 
         task {
             conn.Open()
 
             insert {
                 into todoTable
-                value newTodo
+                value todo
             } |> conn.InsertAsync 
               |> ignore
 
@@ -87,5 +87,19 @@ type Store() =
             return result
         }
 
-    //member _.Delete id = data.TryRemove id
+    member _.Delete id =
+        task {
+            conn.Open()
+
+            let result = 
+                delete {
+                    for t in todoTable do
+                    where (t.Id = id)
+                } |> conn.DeleteAsync
+                  |> Async.AwaitTask
+
+            conn.Close()
+                
+            return result
+        }
 
