@@ -8,22 +8,22 @@ open Repository
 open System.Collections.Generic
 open Microsoft.Extensions.Logging
 
-//let getTaskHandler (id : Guid) = 
-//    fun (next : HttpFunc) (ctx : HttpContext) ->
-//        let logger = ctx.GetLogger()
+let readTaskHandler (id : Guid) = 
+    fun (next : HttpFunc) (ctx : HttpContext) ->
+        let logger = ctx.GetLogger()
 
-//        task {
-//            logger.Log(LogLevel.Information, $"Fetching task with guid: {id}")
+        task {
+            logger.Log(LogLevel.Information, $"Fetching task with guid: {id}")
             
-//            let store = ctx.GetService<Store>()
-//            let todo = store.Get(id)
+            let store = ctx.GetService<Store>()
+            let todo = store.Read(id)
 
-//            logger.Log(LogLevel.Information, todo.ToString())
+            logger.Log(LogLevel.Information, todo.ToString())
 
-//            return! json todo next ctx
-//        }
+            return! json todo next ctx
+        }
 
-let getTasksHandler = 
+let readTasksHandler = 
     fun (next : HttpFunc) (ctx : HttpContext) ->
         let logger = ctx.GetLogger()
 
@@ -31,7 +31,7 @@ let getTasksHandler =
             logger.Log(LogLevel.Information, $"Fetching all tasks")
             
             let store = ctx.GetService<Store>()
-            let todos = store.GetAll()
+            let todos = store.ReadAll()
 
             logger.Log(LogLevel.Information, todos.ToString())
 

@@ -15,7 +15,7 @@ type Store() =
     let conn = new NpgsqlConnection(config.["connectionString"]) :> IDbConnection
     let todoTable = table<Todo>
 
-    let taskToList (t:Task<seq<'a>>) = t |> Async.AwaitTask |> Async.RunSynchronously |> Seq.toArray
+    let taskToArray (t:Task<seq<'a>>) = t |> Async.AwaitTask |> Async.RunSynchronously |> Seq.toArray
 
     member _.Create newTodo = 
         task {
@@ -29,10 +29,24 @@ type Store() =
 
             conn.Close()
         }
-    //member _.Update todo = data.TryUpdate(todo.Id, todo, data.[todo.Id])
-    //member _.Delete id = data.TryRemove id
-    //member _.Get id = data.[id]
-    member _.GetAll () = 
+
+    member _.Read id = 
+        task {
+            conn.Open()
+
+            let result = 
+                select {
+                    for t in todoTable do
+                    where (t.Id = id)
+                } |> conn.SelectAsync<Todo>
+                  |> taskToArray
+
+            conn.Close()
+                
+            return result
+        }
+
+    member _.ReadAll () = 
         task {
             conn.Open()
 
@@ -41,9 +55,14 @@ type Store() =
                     for t in todoTable do
                     selectAll
                 } |> conn.SelectAsync<Todo>
-                  |> taskToList
+                    |> taskToArray
 
             conn.Close()
-            
+                
             return result
         }
+
+    //member _.Update todo = data.TryUpdate(todo.Id, todo, data.[todo.Id])
+
+    //member _.Delete id = data.TryRemove id
+

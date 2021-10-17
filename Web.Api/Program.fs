@@ -16,8 +16,8 @@ let apiTodoRoutes : HttpHandler =
     subRoute "/todo/"
         (choose [
             GET >=> choose [
-                //routef "%O" Handlers.getTaskHandler
-                route "" >=> Handlers.getTasksHandler
+                routef "%O" Handlers.readTaskHandler
+                route "" >=> Handlers.readTasksHandler
             ]
             POST >=> route "" >=> Handlers.createTaskHandler
             //PUT >=> route "" >=> Handlers.updateTaskHandler
