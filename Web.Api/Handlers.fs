@@ -9,7 +9,7 @@ open Microsoft.AspNetCore.Http
 open Microsoft.Extensions.Logging
 open System
 
-let readTaskHandler (id : Guid) = 
+let readTaskHandler id = 
     fun (next : HttpFunc) (ctx : HttpContext) ->
         let logger = ctx.GetLogger()
 
@@ -75,7 +75,7 @@ let updateTaskHandler =
             return! json updated next ctx
         }
 
-let deleteTaskHandler (id : Guid) = 
+let deleteTaskHandler id = 
     fun (next : HttpFunc) (ctx : HttpContext) ->
         let logger = ctx.GetLogger()
 
