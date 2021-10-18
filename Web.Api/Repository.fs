@@ -18,87 +18,79 @@ type Store() =
     let taskToArray (t:Task<seq<'a>>) = t |> Async.AwaitTask |> Async.RunSynchronously |> Seq.toArray
 
     member _.Create todo = 
-        task {
-            conn.Open()
+        if conn.State = ConnectionState.Closed then conn.Open()
 
-            insert {
-                into todoTable
-                value todo
-            } |> conn.InsertAsync 
-              |> ignore
+        insert {
+            into todoTable
+            value todo
+        } |> conn.InsertAsync 
+          |> ignore
 
-            conn.Close()
-        }
+        conn.Close()
 
     member _.Read id = 
-        task {
-            conn.Open()
+        if conn.State = ConnectionState.Closed then conn.Open()
 
-            let result = 
-                select {
-                    for t in todoTable do
-                    where (t.Id = id)
-                } |> conn.SelectAsync<Todo>
-                  |> taskToArray
+        let result = 
+            select {
+                for t in todoTable do
+                where (t.Id = id)
+            } |> conn.SelectAsync<Todo>
+              |> taskToArray
 
-            conn.Close()
+        conn.Close()
                 
-            return result
-        }
+        result
 
     member _.ReadAll () = 
-        task {
-            conn.Open()
+        if conn.State = ConnectionState.Closed then conn.Open()
 
-            let result = 
-                select {
-                    for t in todoTable do
-                    selectAll
-                } |> conn.SelectAsync<Todo>
-                  |> taskToArray
+        let result = 
+            select {
+                for t in todoTable do
+                selectAll
+            } |> conn.SelectAsync<Todo>
+              |> taskToArray
 
-            conn.Close()
+        conn.Close()
                 
-            return result
-        }
+        result
 
-    member _.Update todo = 
-        task {
-            conn.Open()
+    member _.Update todo =
+        if conn.State = ConnectionState.Closed then conn.Open()
 
-            let _ = 
-                update {
-                    for t in todoTable do
-                    setColumn t.Description todo.Description
-                    setColumn t.IsCompleted todo.IsCompleted
-                    where (t.Id = todo.Id)
-                } |> conn.UpdateAsync<Todo>
-                  |> Async.AwaitTask
+        let _ = 
+            update {
+                for t in todoTable do
+                setColumn t.Description todo.Description
+                setColumn t.IsCompleted todo.IsCompleted
+                where (t.Id = todo.Id)
+            } |> conn.UpdateAsync<Todo>
+              |> Async.AwaitTask
+              |> Async.RunSynchronously
 
-            let result = 
-                select {
-                    for t in todoTable do
-                    where (t.Id = todo.Id)
-                } |> conn.SelectAsync<Todo>
-                  |> taskToArray
+        let result = 
+            select {
+                for t in todoTable do
+                where (t.Id = todo.Id)
+            } |> conn.SelectAsync<Todo>
+              |> taskToArray
 
-            conn.Close()
+        conn.Close()
             
-            return result
-        }
+        result
 
     member _.Delete id =
-        task {
-            conn.Open()
+        if conn.State = ConnectionState.Closed then conn.Open()
 
-            let result = 
-                delete {
-                    for t in todoTable do
-                    where (t.Id = id)
-                } |> conn.DeleteAsync
-                  |> Async.AwaitTask
+        let result = 
+            delete {
+                for t in todoTable do
+                where (t.Id = id)
+            } |> conn.DeleteAsync
+              |> Async.AwaitTask
+              |> Async.RunSynchronously
 
-            conn.Close()
+        conn.Close()
                 
-            return result
-        }
+        result
