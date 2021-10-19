@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>Web.Api</AssemblyName>
-    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <!-- <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath> -->
     <UserSecretsId>caef38ba-5c7c-447e-afaf-ca9fa678183d</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\</DockerfileContext>

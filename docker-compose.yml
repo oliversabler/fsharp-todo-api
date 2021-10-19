@@ -1,11 +1,11 @@
 version: '3.4'
 
 services:
-  web.api:
+  api:
     image: ${DOCKER_REGISTRY-}webapi
     build:
       context: .
-      dockerfile: Web.Api/Dockerfile
+      dockerfile: src/api/Dockerfile
       
   database:
     image: 'postgres:latest'
