@@ -11,7 +11,7 @@ Lightweight Todo API written in F# using [Giraffe](https://github.com/giraffe-fs
 Run `docker-compose up`
 
 ### REST Client
-Navigate to rest-client-requests folder and use the request in todo.http
+Navigate to rest-client-requests folder and use the requests in the file named `todo.http`
 
 ### Postman, etc.
 #### Create a new task
