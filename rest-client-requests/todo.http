@@ -1,0 +1,32 @@
+### Environment variables
+@baseUrl = http://localhost:5000/api/todo/
+@contentType = application/json
+
+# past guid into variable without quotation marks
+@guid = 
+
+### Create todo
+POST {{baseUrl}} HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "Description": "Some todo"
+}
+
+### Get all todos
+GET {{baseUrl}} HTTP/1.1
+
+### Get todo by guid
+GET {{baseUrl}}{{guid}} HTTP/1.1
+
+### Update todo
+PUT {{baseUrl}} HTTP/1.1
+
+{
+    "Id": "",
+    "Description": "Some updated todos",
+    "IsCompleted": true
+}
+
+### Delete todo by guid
+DELETE {{baseUrl}}{{guid}} HTTP/1.1
